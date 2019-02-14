@@ -1,2 +1,7 @@
-# calendar
-An JavaScript calendar application built to test my skills with HTML, CSS and JavaScript
+# Calendar
+
+An JavaScript calendar application built to test my skills.
+
+# Technologies used
+
+HTML, CSS and JavaScript
