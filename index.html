@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Calendar</title>
+		<style type="text/css">
+			table{
+			    text-align: center;
+			    border: 1px solid black;
+			}
+
+			th{
+			    border: 1px solid red;
+			    height: 20px;
+			}
+
+			td{
+			    width: 80px;
+			    height: 20px;
+			    border: 1px solid red;
+			}
+
+			.appointed{
+			    background-color: lightgray;
+			    opacity: 0.5;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="calendar" class="calendar">
+            <h3>Click in a day to mark an appointment</h3>
+            <table id="body--calendar">
+            </table>
+        </div>
+        <script type="text/javascript">
+			let actualDate = new Date();
+			let year = actualDate.getFullYear();
+			const NUMBER_TO_FIX_0_BASED = 1;
+			const LAST_DAY_IN_THE_PREVIOUS_MONTH = 0;
+			let month = actualDate.getMonth() + NUMBER_TO_FIX_0_BASED;
+			let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+			let firstDayOfTheWeek = actualDate.getDay() + NUMBER_TO_FIX_0_BASED;
+			let daysOfWeek = ["Sunday","Monday", "Tuesday", "Wednesday", "Thurday", "Friday", "Saturday"];
+			let quantityOfDays = new Date(year, month, LAST_DAY_IN_THE_PREVIOUS_MONTH).getDate();
+
+			let appointments = [];
+
+			function markAppointment(){
+			    let classList = event.target.classList;
+			    let marked = classList.contains("appointed");
+			    const CLASS_NAME = "appointed";
+			    let cancel = false;
+			    if(marked){
+			        cancel = confirm("Would you like to cancel your appointment?");
+			        if(cancel){
+			            classList.remove(CLASS_NAME);
+			        }
+			    } else{
+			        marked = confirm("Would you like to mark an appointment?");
+			        if(marked){
+			            classList.add(CLASS_NAME);
+			        }
+			    }
+			}
+
+			function toggleClass(condition, classList, className){
+			    if(condition){
+			        classList.add(className);
+			    } else{
+			        classList.remove(className);
+			    }
+			}
+
+			function loadDays(firstDayOfTheWeek, quantityOfDays){
+			    let weekDay = firstDayOfTheWeek;
+			    let days = "<tr>";
+			    let afterFirstWeek = true;
+			    for(let i = 1; i <= quantityOfDays; i++){
+			        let emptyTd = `<td class=''> </td>`;
+			        let filledTd = `<td class='day-${i}' onclick="markAppointment()">${i}</td>`;
+			        if(weekDay > 1 && afterFirstWeek){
+			            for(let j = 1; j < weekDay; j++){
+			                days += emptyTd;
+			            }
+			            days += filledTd;
+			            afterFirstWeek = false;
+			        } else {
+			            days += filledTd;
+			        }
+			        if(weekDay === 7){
+			            days += `</tr>`;
+			            weekDay = 1;
+			            if(i < quantityOfDays){
+			                days += "<tr>";
+			            }
+			        } else{
+			            weekDay++;
+			        } 
+			        if(i === quantityOfDays){
+			            for(let j = weekDay; j <= 7; j++){
+			                days += emptyTd;
+			            }
+			            days += `</tr>`;
+			        }
+			    }
+			    return days;
+			}
+
+			let content = `
+			    <tr>
+			        <th colspan="7">${months[actualDate.getMonth()]} ${actualDate.getFullYear()}</th>
+			    </tr>
+			    <tr>
+			        ${daysOfWeek.reduce((current, day, index) => {
+			            return `${current}<td class="week-${index}">${day}</td>`;
+			        }, "")}
+			    </tr>
+			    ${loadDays(firstDayOfTheWeek, quantityOfDays)}
+			`;
+			document.getElementById("body--calendar").innerHTML = content;
+		</script>
+	</body>
+</html>
