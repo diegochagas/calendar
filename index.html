@@ -77,7 +77,7 @@
 			    for(let i = 1; i <= quantityOfDays; i++){
 			        let emptyTd = `<td class=''> </td>`;
 			        let filledTd = `<td class='day-${i}' onclick="markAppointment()">${i}</td>`;
-			        if(weekDay > 1 && afterFirstWeek){
+			        if(weekDay >= 1 && afterFirstWeek){
 			            for(let j = 1; j < weekDay; j++){
 			                days += emptyTd;
 			            }
