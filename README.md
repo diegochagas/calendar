@@ -2,7 +2,7 @@
 
 An JavaScript calendar application built to test my skills.
 
-# Technologies used
+## Used technologies
 
 - HTML
 - CSS 
